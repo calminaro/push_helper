@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<title>GV Piemonte</title>
+
+{% endblock %}
+
+{% block titolo %}
+
+<h1 class="text-center my-2"><strong>Rclone Helper</strong></h1>
+
+{% endblock %}
+
+{% block corpo %}
+<div class="row mx-2">
+
+<p class="text-center">
+<img class="" src="/static/logo.svg" alt="" height="100">
+<br>
+Benvenuto <strong>{{ current_user.username }}</strong>!
+</p>
+
+</div>
+{% endblock %}
