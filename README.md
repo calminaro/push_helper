@@ -1,3 +1,3 @@
 # Rclone Helper
 
-Semplice GUI per gestire i backup periodici utilizzando rclone
+Semplice helper per notifiche push
