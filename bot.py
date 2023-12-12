@@ -16,8 +16,8 @@ def manda_telegram():
 def manda_mail():
     message = MIMEMultipart("alternative")
     message["Subject"] = sys.argv[1]
-    message["From"] = cr["mail"]["sender_mail"]
-    message["To"] = cr["mail"]["sender_mail"]
+    message["From"] = cr["mail"]["sender_email"]
+    message["To"] = cr["mail"]["reciever_email"]
 
     text = sys.argv[2]
     html = f"<html><body><p>{sys.argv[2]}</p></body></html>"
@@ -29,17 +29,19 @@ def manda_mail():
     message.attach(part2)
 
     context = ssl.create_default_context()
-    with smtplib.SMTP(smtp_server, port) as server:
+    with smtplib.SMTP(cr["mail"]["smtp_server"], cr["mail"]["port"]) as server:
         server.ehlo()
         server.starttls(context=context)
         server.ehlo()
-        server.login(cr["mail"]["sender_mail"], cr["mail"]["password"])
-        server.sendmail(cr["mail"]["sender_mail"], cr["mail"]["sender_mail"], message.as_string())
+        server.login(cr["mail"]["sender_email"], cr["mail"]["password"])
+        server.sendmail(cr["mail"]["sender_email"], cr["mail"]["reciever_email"], message.as_string())
 
-if sys.argv[3] "mail":
-    manda_mail()
-elif sys.argv[3] "telegram":
-    manda_telegram()
+
+if len(sys.argv) > 3:
+    if sys.argv[3] == "mail":
+        manda_mail()
+    elif sys.argv[3] == "telegram":
+        manda_telegram()
 else:
     manda_mail()
     manda_telegram()
