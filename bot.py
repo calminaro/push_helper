@@ -5,22 +5,22 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-with open("credenziali.json", "r") as f:
+with open(sys.argv[1], "r") as f:
     cr = json.load(f)
 
 def manda_telegram():
-    message = f"{sys.argv[1]}: {sys.argv[2]}"
+    message = f"{sys.argv[2]}: {sys.argv[3]}"
     url = f"https://api.telegram.org/bot{cr['telegram']['token_id']}/sendMessage?chat_id={cr['telegram']['chat_id']}&text={message}"
     requests.get(url).json()
 
 def manda_mail():
     message = MIMEMultipart("alternative")
-    message["Subject"] = sys.argv[1]
+    message["Subject"] = sys.argv[2]
     message["From"] = cr["mail"]["sender_email"]
     message["To"] = cr["mail"]["reciever_email"]
 
-    text = sys.argv[2]
-    html = f"<html><body><p>{sys.argv[2]}</p></body></html>"
+    text = sys.argv[3]
+    html = f"<html><body><p>{sys.argv[3]}</p></body></html>"
 
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
@@ -37,10 +37,10 @@ def manda_mail():
         server.sendmail(cr["mail"]["sender_email"], cr["mail"]["reciever_email"], message.as_string())
 
 
-if len(sys.argv) > 3:
-    if sys.argv[3] == "mail":
+if len(sys.argv) > 4:
+    if sys.argv[4] == "mail":
         manda_mail()
-    elif sys.argv[3] == "telegram":
+    elif sys.argv[4] == "telegram":
         manda_telegram()
 else:
     manda_mail()
